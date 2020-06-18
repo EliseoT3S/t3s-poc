@@ -12,6 +12,7 @@
           - yum-utils
           - mariadb-server
           - mariadb
+          - git
         state: latest
      
      - name: Config remi repo
