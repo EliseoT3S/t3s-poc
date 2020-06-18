@@ -18,7 +18,23 @@
         template: "{{ template-name }}"
         name: "{{ fdqn-vm }}"
         memory: "{{ memory-number }}"
-        state: present
+        state: running 
+        cloud_init:
+          host_name: "{{ fdqn-vm }}"."{{ domain }}"
+          user_name: root
+          root_password: "{{ password_root }}"
+          nic_name: eth0
+          nic_on_boot: true 
+          nic_boot_protocol: static
+          nic_ip_address: "{{ ip_address }}"
+          nic_netmask: "{{ netmask }}"
+          nic_gateway: "{{ gateway }}"
+          dns_servers: "{{ dns-server }}"
+          
+          custom_script: | 
+            runcmd:
+              - hostnamectl set-hostname {{ fdqn-vm }}.{{ domain }}
+              - yum -y remove cloud-init
    
    post_tasks:
      - name: Logout from oVirt
